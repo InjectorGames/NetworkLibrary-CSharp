@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace InjectorGames.NetworkLibrary.UDP
+﻿namespace InjectorGames.NetworkLibrary.UDP
 {
     /// <summary>
     /// Base UDP request/response abstract class

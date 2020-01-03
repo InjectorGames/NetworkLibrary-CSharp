@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>NetworkLibrary</AssemblyName>
+    <RootNamespace>InjectorGames.NetworkLibrary</RootNamespace>
+    <Authors>Nikita Fediuchin</Authors>
+    <Company>Injector Games</Company>
+    <RepositoryUrl>https://github.com/InjectorGames/NetworkLibrary-CSharp</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libraries\SharedLibrary-CSharp\Library\SharedLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

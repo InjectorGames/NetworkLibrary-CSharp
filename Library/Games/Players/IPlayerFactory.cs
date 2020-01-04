@@ -12,6 +12,6 @@ namespace InjectorGames.NetworkLibrary.Games.Players
         /// <summary>
         /// Creates a new player instance
         /// </summary>
-        T Create(long id, long lastActionTime, Username name, Token connecToken, IPEndPoint remoteEndPoint);
+        T Create(long id, long lastPingTime, Username name, Token connecToken, IPEndPoint remoteEndPoint);
     }
 }

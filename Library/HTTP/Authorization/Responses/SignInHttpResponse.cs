@@ -6,17 +6,12 @@ namespace InjectorGames.NetworkLibrary.HTTP.Authorization.Responses
     /// <summary>
     /// Sign in HTTP response class
     /// </summary>
-    public class SignInHttpResponse : BaseHttpResponse
+    public class SignInHttpResponse : HttpResponseBase
     {
         /// <summary>
         /// Response type string value
         /// </summary>
         public const string Type = "SignIn";
-
-        /// <summary>
-        /// Response type string value
-        /// </summary>
-        public override string ResponseType => Type;
 
         /// <summary>
         /// Sign in request result
@@ -92,9 +87,7 @@ namespace InjectorGames.NetworkLibrary.HTTP.Authorization.Responses
         /// </summary>
         public enum ResultType : int
         {
-            BadRequest = BaseResultType.BadRequest,
-            Success = BaseResultType.Success,
-
+            Success,
             IncorrectUsername,
             IncorrectPassword,
             AccountIsBlocked,

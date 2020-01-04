@@ -2,15 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>NetworkLibrary</AssemblyName>
+    <AssemblyName>InjectorGames.NetworkLibrary</AssemblyName>
     <RootNamespace>InjectorGames.NetworkLibrary</RootNamespace>
     <Authors>Nikita Fediuchin</Authors>
     <Company>Injector Games</Company>
     <RepositoryUrl>https://github.com/InjectorGames/NetworkLibrary-CSharp</RepositoryUrl>
+    <Product>Network Library</Product>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>injector, games, open, source, network, networking, library, useful</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libraries\SharedLibrary-CSharp\Library\SharedLibrary.csproj" />
+    <PackageReference Include="InjectorGames.SharedLibrary" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

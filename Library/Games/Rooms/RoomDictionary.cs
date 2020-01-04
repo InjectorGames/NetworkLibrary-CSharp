@@ -32,7 +32,7 @@ namespace InjectorGames.NetworkLibrary.Games.Rooms
         /// <summary>
         /// Returns true if player has joined the room
         /// </summary>
-        public bool JoinPlayer(long roomId, TAccount account, out RoomInfo roomInfo, out Token connectToken)
+        public bool AddPlayer(long roomId, TAccount account, out RoomInfo roomInfo, out Token connectToken)
         {
             if (!TryGetValue(roomId, out TRoom room))
             {
@@ -41,7 +41,8 @@ namespace InjectorGames.NetworkLibrary.Games.Rooms
                 return false;
             }
 
-            return room.JoinPlayer(account, out roomInfo, out connectToken);
+            roomInfo = new RoomInfo(room.ID, room.Name);
+            return room.AddPlayer(account, out connectToken);
         }
     }
 }

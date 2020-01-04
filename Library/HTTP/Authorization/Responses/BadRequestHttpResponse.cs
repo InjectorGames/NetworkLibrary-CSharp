@@ -3,17 +3,12 @@
     /// <summary>
     /// Bad request HTTP response class
     /// </summary>
-    public class BadRequestHttpResponse : BaseHttpResponse
+    public class BadRequestHttpResponse : HttpResponseBase
     {
         /// <summary>
         /// Response type string value
         /// </summary>
         public const string Type = "BadRequest";
-
-        /// <summary>
-        /// Response type string value
-        /// </summary>
-        public override string ResponseType => Type;
 
         /// <summary>
         /// Bad request details

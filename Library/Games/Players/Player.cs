@@ -27,7 +27,7 @@ namespace InjectorGames.NetworkLibrary.Games.Players
         /// <summary>
         /// Last player action time in milliseconds
         /// </summary>
-        public long LastActionMS { get; set; }
+        public long LastPingMS { get; set; }
         /// <summary>
         /// Player name
         /// </summary>
@@ -48,10 +48,10 @@ namespace InjectorGames.NetworkLibrary.Games.Players
         /// <summary>
         /// Creates a new player instance
         /// </summary>
-        public Player(long id, long lastActionTime, Username name, Token connecToken, IPEndPoint remoteEndPoint)
+        public Player(long id, long lastPingTime, Username name, Token connecToken, IPEndPoint remoteEndPoint)
         {
             ID = id;
-            LastActionMS = lastActionTime;
+            LastPingMS = lastPingTime;
             Name = name;
             ConnecToken = connecToken;
             RemoteEndPoint = remoteEndPoint;
@@ -62,10 +62,22 @@ namespace InjectorGames.NetworkLibrary.Games.Players
         public Player(BinaryReader binaryReader)
         {
             ID = binaryReader.ReadInt64();
-            LastActionMS = binaryReader.ReadInt64();
+            LastPingMS = binaryReader.ReadInt64();
             Name = new Username(binaryReader);
             ConnecToken = new Token(binaryReader);
             RemoteEndPoint = IPEndPointExtension.FromBytes(binaryReader);
+        }
+
+        /// <summary>
+        /// Converts player data to the byte array
+        /// </summary>
+        public virtual void ToBytes(BinaryWriter binaryWriter)
+        {
+            binaryWriter.Write(ID);
+            binaryWriter.Write(LastPingMS);
+            Name.ToBytes(binaryWriter);
+            ConnecToken.ToBytes(binaryWriter);
+            RemoteEndPoint.ToBytes(binaryWriter);
         }
 
         /// <summary>
@@ -110,18 +122,6 @@ namespace InjectorGames.NetworkLibrary.Games.Players
         public bool Equals(IPlayer other)
         {
             return ID.Equals(other.ID);
-        }
-
-        /// <summary>
-        /// Converts player data to the byte array
-        /// </summary>
-        public virtual void ToBytes(BinaryWriter binaryWriter)
-        {
-            binaryWriter.Write(ID);
-            binaryWriter.Write(LastActionMS);
-            Name.ToBytes(binaryWriter);
-            ConnecToken.ToBytes(binaryWriter);
-            RemoteEndPoint.ToBytes(binaryWriter);
         }
     }
 }

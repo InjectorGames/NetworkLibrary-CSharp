@@ -15,10 +15,6 @@ namespace InjectorGames.NetworkLibrary.UDP
         /// Maximal UDP datagram/packet size
         /// </summary>
         public const int MaxUdpSize = ushort.MaxValue + 1;
-        /// <summary>
-        /// Default request time out value in the milliseconds
-        /// </summary>
-        public const int RequestTimeOut = 5000;
 
         /// <summary>
         /// UDP server logger
@@ -76,15 +72,7 @@ namespace InjectorGames.NetworkLibrary.UDP
             receiveThread.Start();
 
             if (logger.Log(LogType.Info))
-                logger.Info("UDP socket started.");
-        }
-        /// <summary>
-        /// Binds UDP socket and starts receive thread
-        /// </summary>
-        public void Start(IPAddress address, int port)
-        {
-            var localEndPoint = new IPEndPoint(address, port);
-            Start(localEndPoint);
+                logger.Info("Started UDP socket.");
         }
         /// <summary>
         /// Binds UDP socket and starts receive thread
@@ -110,7 +98,7 @@ namespace InjectorGames.NetworkLibrary.UDP
                 socket.Close();
 
                 if (logger.Log(LogType.Debug))
-                    logger.Debug("UDP socket instance closed.");
+                    logger.Debug("Closed UDP socket instance.");
             }
             catch (Exception exception)
             {
@@ -131,7 +119,7 @@ namespace InjectorGames.NetworkLibrary.UDP
             }
 
             if (logger.Log(LogType.Info))
-                logger.Info("UDP socket closed.");
+                logger.Info("Closed UDP socket.");
         }
 
         /// <summary>
@@ -161,25 +149,12 @@ namespace InjectorGames.NetworkLibrary.UDP
         /// <summary>
         /// Sends datagram to the specified remote end point
         /// </summary>
-        public int Send(Datagram datagram)
+        public int Send(IDatagram datagram)
         {
-            var result = socket.SendTo(datagram.data, 0, datagram.data.Length, SocketFlags.None, datagram.ipEndPoint);
+            var result = socket.SendTo(datagram.Data, 0, datagram.Length, SocketFlags.None, datagram.IpEndPoint);
 
             if (logger.Log(LogType.Trace))
-                logger.Trace($"Sended UDP socket datagram. (remoteEndPoint: {datagram.ipEndPoint}, sendedBytes: {result})");
-
-            return result;
-        }
-        /// <summary>
-        /// Sends datagram to the specified remote end point
-        /// </summary>
-        public int Send(IUdpRequestResponse requestResponse, IPEndPoint remoteEndPoint)
-        {
-            var data = requestResponse.ToData();
-            var result = socket.SendTo(data, 0, data.Length, SocketFlags.None, remoteEndPoint);
-
-            if (logger.Log(LogType.Trace))
-                logger.Trace($"Sended UDP socket datagram. (remoteEndPoint: {remoteEndPoint}, sendedBytes: {result})");
+                logger.Trace($"Sended UDP socket datagram. (remoteEndPoint: {datagram.IpEndPoint}, sendedBytes: {result}, datagramType: {datagram.Type})");
 
             return result;
         }
@@ -190,7 +165,7 @@ namespace InjectorGames.NetworkLibrary.UDP
         protected void ReceiveThreadLogic()
         {
             if (logger.Log(LogType.Debug))
-                logger.Debug("UDP socket receive thread started.");
+                logger.Debug("Started UDP socket receive thread.");
 
             var buffer = new byte[MaxUdpSize];
 
@@ -207,10 +182,10 @@ namespace InjectorGames.NetworkLibrary.UDP
                     var data = new byte[count];
                     Buffer.BlockCopy(buffer, 0, data, 0, count);
 
-                    var datagram = new Datagram(data, (IPEndPoint)endPoint);
+                    var datagram = new Datagram((IPEndPoint)endPoint, data);
 
                     if (logger.Log(LogType.Trace))
-                        logger.Trace($"Received UDP socket datagram. (remoteEndPoint: {datagram.ipEndPoint}, length: {datagram.Length}, type: {datagram.Type})");
+                        logger.Trace($"Received UDP socket datagram. (remoteEndPoint: {datagram.IpEndPoint}, length: {datagram.Length}, type: {datagram.Type})");
 
                     OnDatagramReceive(datagram);
                 }
@@ -221,7 +196,7 @@ namespace InjectorGames.NetworkLibrary.UDP
             }
 
             if (logger.Log(LogType.Debug))
-                logger.Debug("UDP socket receive thread stopped.");
+                logger.Debug("Stopped UDP socket receive thread.");
         }
 
         /// <summary>

@@ -6,13 +6,12 @@
     public interface IQueuedUdpSocket : IUdpSocket
     {
         /// <summary>
-        /// Dequeues next datagram from the queue (thread-safe)
+        /// Returns true if datagram has dequeued from the queue
         /// </summary>
-        Datagram DequeueNext();
-
+        bool TryDequeueNext(out Datagram datagram);
         /// <summary>
-        /// Dequeues all datagrams from the queue (thread-safe)
+        /// Returns true if datagrams has dequeued from the queue
         /// </summary>
-        Datagram[] DequeueAll();
+        bool TryDequeueAll(out Datagram[] datagramArray);
     }
 }

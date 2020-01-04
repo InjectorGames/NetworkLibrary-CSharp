@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace InjectorGames.NetworkLibrary.Games.Rooms
 {
@@ -29,14 +30,13 @@ namespace InjectorGames.NetworkLibrary.Games.Rooms
         /// </summary>
         public RoomInfo(string serialized)
         {
-            // TODO: compress name to the base64
             var values = serialized.Split(':');
 
             if (values.Length != 2)
                 throw new ArgumentException();
 
             id = long.Parse(values[0]);
-            name = values[1];
+            name = Encoding.Unicode.GetString(Convert.FromBase64String(values[1]));
         }
 
         /// <summary>
@@ -44,15 +44,7 @@ namespace InjectorGames.NetworkLibrary.Games.Rooms
         /// </summary>
         public override string ToString()
         {
-            return $"{id}:{name}";
-        }
-
-        /// <summary>
-        /// Serializes room information container
-        /// </summary>
-        public string Serialize()
-        {
-            return $"{id}:{name}";
+            return $"{id}:{Convert.ToBase64String(Encoding.Unicode.GetBytes(name))}";
         }
     }
 }

@@ -73,7 +73,7 @@ namespace InjectorGames.NetworkLibrary.HTTP
             requestThread.Start();
 
             if (logger.Log(LogType.Info))
-                logger.Info("HTTP server started.");
+                logger.Info("Started HTTP server.");
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace InjectorGames.NetworkLibrary.HTTP
                 listener.Close();
 
                 if (logger.Log(LogType.Debug))
-                    logger.Debug("HTTP server listener closed.");
+                    logger.Debug("Closed HTTP server listener.");
             }
             catch (Exception exception)
             {
@@ -102,7 +102,7 @@ namespace InjectorGames.NetworkLibrary.HTTP
             }
 
             if (logger.Log(LogType.Info))
-                logger.Info("HTTP server closed.");
+                logger.Info("Closed HTTP server.");
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace InjectorGames.NetworkLibrary.HTTP
         protected void RequestThreadLogic()
         {
             if (logger.Log(LogType.Debug))
-                logger.Debug("HTTP server request thread started.");
+                logger.Debug("Started HTTP server request thread.");
 
             while (listener.IsListening)
             {
@@ -131,7 +131,7 @@ namespace InjectorGames.NetworkLibrary.HTTP
             }
 
             if (logger.Log(LogType.Debug))
-                logger.Debug("HTTP server request thread stopped.");
+                logger.Debug("Stopped HTTP server request thread.");
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace InjectorGames.NetworkLibrary.HTTP
         /// <summary>
         /// Sends HTTP server response to the client
         /// </summary>
-        public static void SendResponse(HttpListenerResponse httpResponse, IHttpResponse response)
+        public static void SendResponse(HttpListenerResponse httpResponse, HttpResponseBase response)
         {
             SendResponse(httpResponse, response.ToBody(), true);
         }

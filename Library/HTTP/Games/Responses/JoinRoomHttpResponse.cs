@@ -6,17 +6,12 @@ namespace InjectorGames.NetworkLibrary.HTTP.Games.Responses
     /// <summary>
     /// Join room HTTP response class
     /// </summary> 
-    public class JoinRoomHttpResponse : BaseHttpResponse
+    public class JoinRoomHttpResponse : HttpResponseBase
     {
         /// <summary>
         /// Response type string value
         /// </summary>
         public const string Type = "JoinRoom";
-
-        /// <summary>
-        /// Response type string value
-        /// </summary>
-        public override string ResponseType => Type;
 
         /// <summary>
         /// Join room request result
@@ -85,9 +80,7 @@ namespace InjectorGames.NetworkLibrary.HTTP.Games.Responses
         /// </summary>
         public enum ResultType
         {
-            BadRequest = BaseResultType.BadRequest,
-            Success = BaseResultType.Success,
-
+            Success,
             IncorrectUsername,
             IncorrectAccessToken,
             FailedToJoin,

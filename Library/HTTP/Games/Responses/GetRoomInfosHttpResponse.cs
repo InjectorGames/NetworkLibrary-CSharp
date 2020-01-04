@@ -7,17 +7,12 @@ namespace InjectorGames.NetworkLibrary.HTTP.Games.Responses
     /// <summary>
     /// Get room infos HTTP response class
     /// </summary>
-    public class GetRoomInfosHttpResponse : BaseHttpResponse
+    public class GetRoomInfosHttpResponse : HttpResponseBase
     {
         /// <summary>
         /// Response type string value
         /// </summary>
         public const string Type = "GetRoomInfos";
-
-        /// <summary>
-        /// Response type string value
-        /// </summary>
-        public override string ResponseType => Type;
 
         /// <summary>
         /// Get room infos request result
@@ -59,7 +54,7 @@ namespace InjectorGames.NetworkLibrary.HTTP.Games.Responses
             {
                 result = int.Parse(values[0]);
 
-                var rooms = values[1].Split(';');
+                var rooms = values[1].Split(',');
                 roomInfos = new RoomInfo[rooms.Length];
 
                 for (int i = 0; i < rooms.Length; i++)
@@ -82,13 +77,10 @@ namespace InjectorGames.NetworkLibrary.HTTP.Games.Responses
 
                 for (int i = 0; i < roomInfos.Length; i++)
                 {
-                    var info = roomInfos[i].Serialize();
-                    rooms.Append(info);
+                    rooms.Append(roomInfos[i].ToString());
 
                     if (i < roomInfos.Length - 1)
-                    {
-                        rooms.Append(';');
-                    }
+                        rooms.Append(',');
                 }
 
                 return $"{Type}\n{result} {rooms}";
@@ -104,9 +96,7 @@ namespace InjectorGames.NetworkLibrary.HTTP.Games.Responses
         /// </summary>
         public enum ResultType
         {
-            BadRequest = BaseResultType.BadRequest,
-            Success = BaseResultType.Success,
-
+            Success,
             IncorrectUsername,
             IncorrectAccessToken,
             Count,

@@ -3,13 +3,8 @@
     /// <summary>
     /// Base HTTP request abstract class
     /// </summary>
-    public abstract class BaseHttpRequest : IHttpRequest
+    public abstract class HttpRequestBase
     {
-        /// <summary>
-        /// Request type string value
-        /// </summary>
-        public abstract string RequestType { get; }
-
         /// <summary>
         /// Returns HTTP request URL
         /// </summary>

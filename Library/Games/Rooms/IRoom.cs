@@ -27,7 +27,7 @@ namespace InjectorGames.NetworkLibrary.Games.Rooms
         /// <summary>
         /// Returns true if player has joined the room
         /// </summary>
-        bool JoinPlayer(IAccount account, out RoomInfo roomInfo, out Token connectToken);
+        bool AddPlayer(IAccount account, out Token connectToken);
 
         /// <summary>
         /// Returns true if player has disconnected from the room

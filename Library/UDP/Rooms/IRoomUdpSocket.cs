@@ -2,7 +2,7 @@
 using InjectorGames.NetworkLibrary.Games.Rooms;
 using InjectorGames.SharedLibrary.Times;
 
-namespace InjectorGames.NetworkLibrary.UDP.Games
+namespace InjectorGames.NetworkLibrary.UDP.Rooms
 {
     /// <summary>
     /// Room UDP socket interface

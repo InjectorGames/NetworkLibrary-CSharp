@@ -3,17 +3,12 @@
     /// <summary>
     /// Sign up HTTP response class
     /// </summary>
-    public class SignUpHttpResponse : BaseHttpResponse
+    public class SignUpHttpResponse : HttpResponseBase
     {
         /// <summary>
         /// Response type string value
         /// </summary>
         public const string Type = "SignUp";
-
-        /// <summary>
-        /// Response type string value
-        /// </summary>
-        public override string ResponseType => Type;
 
         /// <summary>
         /// Sign up request result
@@ -59,9 +54,7 @@
         /// </summary>
         public enum ResultType : int
         {
-            BadRequest = BaseResultType.BadRequest,
-            Success = BaseResultType.Success,
-
+            Success,
             UsernameBusy,
             FailedToWrite,
             Count,

@@ -51,128 +51,100 @@ namespace InjectorGames.NetworkLibrary.HTTP.Games
             var urlPair = httpRequest.RawUrl.Split('?');
             var queryString = httpRequest.QueryString;
 
-            switch (urlPair[0])
-            {
-                default:
-                    var response = new BadRequestHttpResponse("Unknown request type");
-                    SendResponse(httpResponse, response);
-                    break;
-                case SignUpHttpRequest.Type:
-                    OnSignUpRequest(queryString, httpRequest, httpResponse);
-                    break;
-                case SignInHttpRequest.Type:
-                    OnSignInRequest(queryString, httpRequest, httpResponse);
-                    break;
-                case GetRoomInfosHttpRequest.Type:
-                    OnGetRoomInfosRequest(queryString, httpRequest, httpResponse);
-                    break;
-                case JoinRoomHttpRequest.Type:
-                    OnJoinRoomRequest(queryString, httpRequest, httpResponse);
-                    break;
-            }
-        }
-        protected void OnGetRoomInfosRequest(NameValueCollection queryString, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse)
-        {
-            IHttpResponse response;
-
             try
             {
-                var request = new GetRoomInfosHttpRequest(queryString);
-
-                if (!accountDatabase.TryGetValue(request.id, accountFactory, out TAccount account))
+                switch (urlPair[0])
                 {
-                    response = new GetRoomInfosHttpResponse((int)GetRoomInfosHttpResponse.ResultType.IncorrectUsername);
-                    SendResponse(httpResponse, response);
-
-                    if (logger.Log(LogType.Trace))
-                        logger.Trace($"Sended HTTP server get room infos response, incorrect id. (id: {request.id}, remoteEndPoint: {httpRequest.RemoteEndPoint})");
-
-                    return;
+                    default:
+                        SendResponse(httpResponse, new BadRequestHttpResponse("Unknown request type"));
+                        break;
+                    case SignUpHttpRequest.Type:
+                        OnSignUpRequest(new SignUpHttpRequest(queryString), httpRequest, httpResponse);
+                        break;
+                    case SignInHttpRequest.Type:
+                        OnSignInRequest(new SignInHttpRequest(queryString), httpRequest, httpResponse);
+                        break;
+                    case GetRoomInfosHttpRequest.Type:
+                        OnGetRoomInfosRequest(new GetRoomInfosHttpRequest(queryString), httpRequest, httpResponse);
+                        break;
+                    case JoinRoomHttpRequest.Type:
+                        OnJoinRoomRequest(new JoinRoomHttpRequest(queryString), httpRequest, httpResponse);
+                        break;
                 }
-
-                if (request.accessToken != account.AccessToken)
-                {
-                    response = new GetRoomInfosHttpResponse((int)GetRoomInfosHttpResponse.ResultType.IncorrectAccessToken);
-                    SendResponse(httpResponse, response);
-
-                    if (logger.Log(LogType.Trace))
-                        logger.Trace($"Sended HTTP server get room infos response, incorrect access token. (id: {request.id},, remoteEndPoint: {httpRequest.RemoteEndPoint})");
-
-                    return;
-                }
-
-                var roomInfos = rooms.GetInfos();
-
-                response = new GetRoomInfosHttpResponse((int)GetRoomInfosHttpResponse.ResultType.Success, roomInfos);
-                SendResponse(httpResponse, response);
-
-                if (logger.Log(LogType.Info))
-                    logger.Info($"Sended room infos to the account. (id: {request.id}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomCount: {roomInfos.Length})");
             }
-            catch
+            catch (Exception exception)
             {
-                response = new GetRoomInfosHttpResponse((int)GetRoomInfosHttpResponse.ResultType.BadRequest);
-                SendResponse(httpResponse, response);
+                SendResponse(httpResponse, new BadRequestHttpResponse("Bad request"));
 
-                if (logger.Log(LogType.Trace))
-                    logger.Trace($"Bad get room infos request. (remoteEndPoint: {httpRequest.RemoteEndPoint})");
+                if (logger.Log(LogType.Warning))
+                    logger.Warning($"Bad room server HTTP request. (type: {urlPair[0]}, remoteEndPoint: {httpRequest.RemoteEndPoint}) {exception}");
             }
         }
-        protected void OnJoinRoomRequest(NameValueCollection queryString, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse)
+        protected void OnGetRoomInfosRequest(GetRoomInfosHttpRequest request, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse)
         {
-            IHttpResponse response;
-
-            try
+            if (!accountDatabase.TryGetValue(request.id, accountFactory, out TAccount account))
             {
-                var request = new JoinRoomHttpRequest(queryString);
-
-                if (accountDatabase.TryGetValue(request.accountId, accountFactory, out TAccount account))
-                {
-                    response = new JoinRoomHttpResponse((int)JoinRoomHttpResponse.ResultType.IncorrectUsername);
-                    SendResponse(httpResponse, response);
-
-                    if (logger.Log(LogType.Trace))
-                        logger.Trace($"Sended HTTP server join room response, incorrect id. (id: {request.accountId}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomId: {request.roomId})");
-
-                    return;
-                }
-
-                if (request.accessToken != account.AccessToken)
-                {
-                    response = new JoinRoomHttpResponse((int)JoinRoomHttpResponse.ResultType.IncorrectAccessToken);
-                    SendResponse(httpResponse, response);
-
-                    if (logger.Log(LogType.Trace))
-                        logger.Trace($"Sended HTTP server join room response, incorrect access token. (id: {request.accountId}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomId: {request.roomId})");
-
-                    return;
-                }
-
-                if (!rooms.JoinPlayer(request.roomId, account, out RoomInfo roomInfo, out Token connectToken))
-                {
-                    response = new JoinRoomHttpResponse((int)JoinRoomHttpResponse.ResultType.FailedToJoin);
-                    SendResponse(httpResponse, response);
-
-                    if (logger.Log(LogType.Trace))
-                        logger.Trace($"Sended HTTP server join room response, failed to join. (id: {request.accountId}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomId: {request.roomId})");
-
-                    return;
-                }
-
-                response = new JoinRoomHttpResponse((int)JoinRoomHttpResponse.ResultType.Success, connectToken);
-                SendResponse(httpResponse, response);
-
-                if (logger.Log(LogType.Info))
-                    logger.Info($"Account joined the room. (id: {request.accountId}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomId: {request.roomId})");
-            }
-            catch
-            {
-                response = new JoinRoomHttpResponse((int)JoinRoomHttpResponse.ResultType.BadRequest);
-                SendResponse(httpResponse, response);
+                SendResponse(httpResponse, new GetRoomInfosHttpResponse((int)GetRoomInfosHttpResponse.ResultType.IncorrectUsername));
 
                 if (logger.Log(LogType.Trace))
-                    logger.Trace($"Bad join room request. (remoteEndPoint: {httpRequest.RemoteEndPoint})");
+                    logger.Trace($"Sended HTTP server get room infos response, incorrect id. (id: {request.id}, remoteEndPoint: {httpRequest.RemoteEndPoint})");
+
+                return;
             }
+
+            if (request.accessToken != account.AccessToken)
+            {
+                SendResponse(httpResponse, new GetRoomInfosHttpResponse((int)GetRoomInfosHttpResponse.ResultType.IncorrectAccessToken));
+
+                if (logger.Log(LogType.Trace))
+                    logger.Trace($"Sended HTTP server get room infos response, incorrect access token. (id: {request.id},, remoteEndPoint: {httpRequest.RemoteEndPoint})");
+
+                return;
+            }
+
+            var roomInfos = rooms.GetInfos();
+
+            SendResponse(httpResponse, new GetRoomInfosHttpResponse((int)GetRoomInfosHttpResponse.ResultType.Success, roomInfos));
+
+            if (logger.Log(LogType.Info))
+                logger.Info($"Sended room infos to the account. (id: {request.id}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomCount: {roomInfos.Length})");
+        }
+        protected void OnJoinRoomRequest(JoinRoomHttpRequest request, HttpListenerRequest httpRequest, HttpListenerResponse httpResponse)
+        {
+            if (accountDatabase.TryGetValue(request.accountId, accountFactory, out TAccount account))
+            {
+                SendResponse(httpResponse, new JoinRoomHttpResponse((int)JoinRoomHttpResponse.ResultType.IncorrectUsername));
+
+                if (logger.Log(LogType.Trace))
+                    logger.Trace($"Sended HTTP server join room response, incorrect id. (id: {request.accountId}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomId: {request.roomId})");
+
+                return;
+            }
+
+            if (request.accessToken != account.AccessToken)
+            {
+                SendResponse(httpResponse, new JoinRoomHttpResponse((int)JoinRoomHttpResponse.ResultType.IncorrectAccessToken));
+
+                if (logger.Log(LogType.Trace))
+                    logger.Trace($"Sended HTTP server join room response, incorrect access token. (id: {request.accountId}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomId: {request.roomId})");
+
+                return;
+            }
+
+            if (!rooms.AddPlayer(request.roomId, account, out RoomInfo roomInfo, out Token connectToken))
+            {
+                SendResponse(httpResponse, new JoinRoomHttpResponse((int)JoinRoomHttpResponse.ResultType.FailedToJoin));
+
+                if (logger.Log(LogType.Trace))
+                    logger.Trace($"Sended HTTP server join room response, failed to join. (id: {request.accountId}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomId: {request.roomId})");
+
+                return;
+            }
+
+            SendResponse(httpResponse, new JoinRoomHttpResponse((int)JoinRoomHttpResponse.ResultType.Success, connectToken));
+
+            if (logger.Log(LogType.Info))
+                logger.Info($"Account joined the room. (id: {request.accountId}, remoteEndPoint: {httpRequest.RemoteEndPoint}, roomId: {request.roomId})");
         }
     }
 }

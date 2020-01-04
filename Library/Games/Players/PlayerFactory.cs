@@ -31,9 +31,9 @@ namespace InjectorGames.NetworkLibrary.Games.Players
         /// <summary>
         /// Creates a new player instance
         /// </summary>
-        public IPlayer Create(long id, long lastActionTime, Username name, Token connecToken, IPEndPoint remoteEndPoint)
+        public IPlayer Create(long id, long lastPingTime, Username name, Token connecToken, IPEndPoint remoteEndPoint)
         {
-            return new Player(id, lastActionTime, name, connecToken, remoteEndPoint);
+            return new Player(id, lastPingTime, name, connecToken, remoteEndPoint);
         }
     }
 }

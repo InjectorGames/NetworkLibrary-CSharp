@@ -8,17 +8,12 @@ namespace InjectorGames.NetworkLibrary.HTTP.Authorization.Requests
     /// <summary>
     /// Sign up HTTP request class
     /// </summary>
-    public class SignUpHttpRequest : BaseHttpRequest
+    public class SignUpHttpRequest : HttpRequestBase
     {
         /// <summary>
         /// Request type string value
         /// </summary>
         public const string Type = "/api/sign-up";
-
-        /// <summary>
-        /// Request type string value
-        /// </summary>
-        public override string RequestType => Type;
 
         /// <summary>
         /// Account name

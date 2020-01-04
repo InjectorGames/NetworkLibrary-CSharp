@@ -29,10 +29,6 @@ namespace InjectorGames.NetworkLibrary.UDP
         /// <summary>
         /// Binds UDP socket and starts receive thread
         /// </summary>
-        void Start(IPAddress address, int port);
-        /// <summary>
-        /// Binds UDP socket and starts receive thread
-        /// </summary>
         void Start();
 
         /// <summary>
@@ -51,10 +47,6 @@ namespace InjectorGames.NetworkLibrary.UDP
         /// <summary>
         /// Sends datagram to the specified remote end point
         /// </summary>
-        int Send(Datagram datagram);
-        /// <summary>
-        /// Sends datagram to the specified remote end point
-        /// </summary>
-        int Send(IUdpRequestResponse requestResponse, IPEndPoint remoteEndPoint);
+        int Send(IDatagram datagram);
     }
 }

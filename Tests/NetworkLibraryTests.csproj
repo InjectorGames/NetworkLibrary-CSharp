@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>NetworkLibraryTests</AssemblyName>
+    <AssemblyName>InjectorGames.NetworkLibrary.Tests</AssemblyName>
 
     <RootNamespace>InjectorGames.NetworkLibrary.Tests</RootNamespace>
 
@@ -14,6 +14,14 @@
     <Company>Injector Games</Company>
 
     <RepositoryUrl>https://github.com/InjectorGames/NetworkLibrary-CSharp</RepositoryUrl>
+
+    <Product>Network Library Tests</Product>
+
+    <RepositoryType>Git</RepositoryType>
+
+    <NeutralLanguage>en</NeutralLanguage>
+
+    <PackageTags>injector, games, open, source, network, networking, library, tests</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

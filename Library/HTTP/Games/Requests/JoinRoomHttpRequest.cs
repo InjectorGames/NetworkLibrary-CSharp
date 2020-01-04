@@ -8,17 +8,12 @@ namespace InjectorGames.NetworkLibrary.HTTP.Games.Requests
     /// <summary>
     /// Join room HTTP request class
     /// </summary>
-    public class JoinRoomHttpRequest : BaseHttpRequest
+    public class JoinRoomHttpRequest : HttpRequestBase
     {
         /// <summary>
         /// Request type string value
         /// </summary>
         public const string Type = "/api/join-room";
-
-        /// <summary>
-        /// Request type string value
-        /// </summary>
-        public override string RequestType => Type;
 
         /// <summary>
         /// Account identifier

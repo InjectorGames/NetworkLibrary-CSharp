@@ -12,9 +12,9 @@ namespace InjectorGames.NetworkLibrary.Games.Players
     public interface IPlayer : IByteArray, IIdentifiable<long>, INameable<Username>, IComparable, IComparable<IPlayer>, IEquatable<IPlayer>
     {
         /// <summary>
-        /// Last player action time in milliseconds
+        /// Last player ping time in milliseconds
         /// </summary>
-        public long LastActionMS { get; set; }
+        public long LastPingMS { get; set; }
         /// <summary>
         /// Player connect token
         /// </summary>

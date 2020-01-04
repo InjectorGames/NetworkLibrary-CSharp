@@ -27,7 +27,7 @@ namespace InjectorGames.NetworkLibrary.UDP
         /// <summary>
         /// Creates a new tasked UDP socket abstract class instance
         /// </summary>
-        public TaskedUdpSocket(int maxTaskCount, ILogger logger) : base(logger)
+        public TaskedUdpSocket(ILogger logger, int maxTaskCount = 256) : base(logger)
         {
             taskCount = 0;
             this.maxTaskCount = maxTaskCount;
@@ -44,8 +44,8 @@ namespace InjectorGames.NetworkLibrary.UDP
             }
             else
             {
-                if (logger.Log(LogType.Trace))
-                    logger.Trace("Failed to start tasked UDP socket task, maximum active task count.");
+                if (logger.Log(LogType.Debug))
+                    logger.Debug("Failed to start tasked UDP socket task, maximum active task count.");
             }
         }
 

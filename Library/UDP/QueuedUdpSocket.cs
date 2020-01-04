@@ -25,7 +25,7 @@ namespace InjectorGames.NetworkLibrary.UDP
         /// <summary>
         /// Creates a new queued UDP socket abstract class instance
         /// </summary>
-        public QueuedUdpSocket(ILogger logger, int maxDatagramCount) : base(logger)
+        public QueuedUdpSocket(ILogger logger, int maxDatagramCount = 256) : base(logger)
         {
             this.maxDatagramCount = maxDatagramCount;
 
@@ -34,36 +34,47 @@ namespace InjectorGames.NetworkLibrary.UDP
         }
 
         /// <summary>
-        /// Dequeues next datagram from the queue (thread-safe)
+        /// Returns true if datagram has dequeued from the queue
         /// </summary>
-        public Datagram DequeueNext()
+        public bool TryDequeueNext(out Datagram datagram)
         {
             lock (locker)
             {
-                var datagram = datagrams.Dequeue();
+                if (datagrams.Count == 0)
+                {
+                    datagram = default;
+                    return false;
+                }
+
+                datagram = datagrams.Dequeue();
 
                 if (logger.Log(LogType.Trace))
-                    logger.Trace($"Dequeued UDP socket datagram. (remoteEndPoint: {datagram.ipEndPoint}, length: {datagram.Length}, type: {datagram.Type}))");
+                    logger.Trace($"Dequeued UDP socket datagram. (remoteEndPoint: {datagram.IpEndPoint}, length: {datagram.Length}, type: {datagram.Type}))");
 
-                return datagram;
+                return true;
             }
         }
 
         /// <summary>
-        /// Dequeues all datagrams from the queue (thread-safe)
+        /// Returns true if datagrams has dequeued from the queue
         /// </summary>
-        public Datagram[] DequeueAll()
+        public bool TryDequeueAll(out Datagram[] datagramArray)
         {
             lock (locker)
             {
-                var datagramArray = datagrams.ToArray();
+                if (datagrams.Count == 0)
+                {
+                    datagramArray = null;
+                    return false;
+                }
 
+                datagramArray = datagrams.ToArray();
                 datagrams.Clear();
 
                 if (logger.Log(LogType.Trace))
                     logger.Trace($"Dequeued all UDP socket datagrams. (count: {datagramArray.Length}))");
 
-                return datagramArray;
+                return true;
             }
         }
 
@@ -79,12 +90,12 @@ namespace InjectorGames.NetworkLibrary.UDP
                     datagrams.Enqueue(datagram);
 
                     if (logger.Log(LogType.Trace))
-                        logger.Trace($"Enqueued UDP socket datagram. (remoteEndPoint: {datagram.ipEndPoint}, length: {datagram.Length}, type: {datagram.Type}))");
+                        logger.Trace($"Enqueued UDP socket datagram. (remoteEndPoint: {datagram.IpEndPoint}, length: {datagram.Length}, type: {datagram.Type}))");
                 }
                 else
                 {
                     if (logger.Log(LogType.Trace))
-                        logger.Trace($"Failed to enqueued UDP socket datagram, queue is full. (remoteEndPoint: {datagram.ipEndPoint}, length: {datagram.Length}, type: {datagram.Type}))");
+                        logger.Trace($"Failed to enqueued UDP socket datagram, queue is full. (remoteEndPoint: {datagram.IpEndPoint}, length: {datagram.Length}, type: {datagram.Type}))");
                 }
             }
         }

@@ -4,16 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkLibrary", "Library\NetworkLibrary.csproj", "{58DD9B01-7EAA-449C-9904-D0B2D03B9F2C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CAD96F65-C949-4DBE-98DB-73B6DD1CD352} = {CAD96F65-C949-4DBE-98DB-73B6DD1CD352}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkLibraryTests", "Tests\NetworkLibraryTests.csproj", "{42C68C75-74D8-4227-8527-0912478D661F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{58DD9B01-7EAA-449C-9904-D0B2D03B9F2C} = {58DD9B01-7EAA-449C-9904-D0B2D03B9F2C}
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "Libraries\SharedLibrary-CSharp\Library\SharedLibrary.csproj", "{CAD96F65-C949-4DBE-98DB-73B6DD1CD352}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +24,6 @@ Global
 		{42C68C75-74D8-4227-8527-0912478D661F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42C68C75-74D8-4227-8527-0912478D661F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42C68C75-74D8-4227-8527-0912478D661F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAD96F65-C949-4DBE-98DB-73B6DD1CD352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAD96F65-C949-4DBE-98DB-73B6DD1CD352}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAD96F65-C949-4DBE-98DB-73B6DD1CD352}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAD96F65-C949-4DBE-98DB-73B6DD1CD352}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
